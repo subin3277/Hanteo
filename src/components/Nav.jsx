@@ -16,6 +16,7 @@ const Nav = () => {
 const S = {
   Nav : styled.nav`
     width: 100%;
+    max-width: 100vw;
     background-color: #FFB1B2;
     height : 60px;
 

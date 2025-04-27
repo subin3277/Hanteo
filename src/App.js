@@ -1,18 +1,107 @@
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import Main from './pages/Main';
-import { Nav } from './components';
+import { Footer, Nav } from './components';
+import Whook from './pages/Whook';
+import { useRef, useState } from 'react';
 
+const pages = ['/', '/whook']
+
+const Swipe = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentIdx = pages.indexOf(location.pathname);
+  
+  const touchStartX = useRef(null);
+  const touchEndX = useRef(null);
+
+  const startX = useRef(null); // 터치 시작 또는 마우스 다운 위치
+  const endX = useRef(null);
+  const [isDragging, setIsDragging] = useState(false); // 마우스 드래그 중인지 여부
+
+  const minSwipeDistance = 75;
+
+  const onTouchStart = e => {
+    console.log("Start")
+    touchStartX.current = e.changedTouches[0].clientX;
+  }
+
+  const onTouchMove = e => {
+    touchEndX.current = e.changedTouches[0].clientX;
+  }
+  
+  const onTouchEnd = () => {
+    handleSwipe()
+  }
+
+  // 마우스 핸들러
+  const onMouseDown = (e) => {
+    startX.current = e.clientX;
+    setIsDragging(true);
+  };
+
+  const onMouseMove = (e) => {
+    if (isDragging) {
+      endX.current = e.clientX;
+    }
+  };
+
+  const onMouseUp = () => {
+    if (isDragging) {
+      handleSwipe();
+      setIsDragging(false);
+    }
+  };
+
+  // 스와이프 판정 함수
+  const handleSwipe = () => {
+    const distance = startX.current - endX.current;
+    if (distance > minSwipeDistance && currentIdx < pages.length - 1) {
+      goNext();
+    } else if (distance < -minSwipeDistance && currentIdx > 0) {
+      goPrev();
+    }
+  };
+
+  const goNext = () => {
+    if (currentIdx < pages.length - 1) {
+      navigate(pages[currentIdx + 1]);
+    }
+  };
+
+  const goPrev = () => {
+    if (currentIdx > 0) {
+      navigate(pages[currentIdx - 1]);
+    }
+  };
+
+  return (
+    <div
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove}
+      onMouseUp={onMouseUp}
+      style={{ touchAction: 'none', flex : 1 }} // 모바일에서 스크롤 방지
+    >
+      <Routes>
+        <Route exact path="/" element={<Main/>}/>
+        <Route path="/whook" element={<Whook/>}/>
+      </Routes>
+    </div>
+  )
+}
 function App() {
   return (
     <div className="App">
       <Nav/>
-      
+
       <Router>
-        <Routes>
-          <Route exact path="/" element={<Main/>}/>
-        </Routes>
+        <Swipe/>
       </Router>
+
+      <Footer/>
     </div>
   );
 }

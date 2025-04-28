@@ -1,13 +1,17 @@
 import {styled} from 'styled-components';
+import Badge from './Badge';
 
-const Card = () => {
+const Card = ({item}) => {
   return (
-    <S.Card>
-      <S.Badge>진행 중</S.Badge>
+    <S.Card onClick={() => window.open(item.url)}>
+      <Badge text={"진행중"} color={"#FC5CA8"}/>
       <S.Image_section/>
       <S.Text_section>
-        <S.Text>[M COUNTDOWN] 10월 2주차 엠카 사전</S.Text>
-        <S.Text>2020.02.08 10:00 ~ 2020.04.08 17:00 (KST)</S.Text>
+        <div style={{display : 'flex', justifyContent : 'space-between'}}>
+          <S.Text className="title">{item.title}</S.Text>
+          <S.Badge>투표하기</S.Badge>
+        </div>
+        <S.Text className="period">{item.period}</S.Text>
       </S.Text_section>
     </S.Card>
   )
@@ -22,6 +26,7 @@ const S = {
     border-radius: 10px;
 
     position: relative;
+    cursor: pointer;
   `,
   Image_section : styled.section`
     height: 70%;
@@ -32,23 +37,28 @@ const S = {
   Text_section : styled.section`
     height: 30%;
     border-radius: 0 0 10px 10px;
+    text-align: start;
+    padding : 5px 10px;
+    box-sizing: border-box;
   `,
   Text : styled.div`
-    
+    &.title {
+      flex : 1 0 0;
+      font-weight: bold;
+      text-overflow: ellipsis;
+      overflow : hidden;
+      white-space: nowrap;
+    }
+
+    &.period {
+      text-align: end;
+    }
   `,
   Badge : styled.div`
-    width : 70px;
-    background-color: #FC5CA8;
-    padding : 3px;
-    font-weight: bold;
-    border-radius: 10px;
-    color : white;
-    text-align: center;
-
-    position: absolute;
-    top : 10px;
-    left : 10px;
-  
+    border: 1px solid #FC5CA8;
+    border-radius: 20px;
+    padding : 0 10px;
+    color : #FC5CA8;
   `
 }
 export default Card;

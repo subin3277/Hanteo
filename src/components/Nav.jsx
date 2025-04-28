@@ -1,14 +1,25 @@
+import { useLocation, useNavigate } from 'react-router-dom';
 import {styled} from 'styled-components';
 
 const Nav = () => {
+
+  const menu_list = [
+    {title : '차트', url : '/'},
+    {title : 'Whook', url : '/whook'},
+    {title : '이벤트', url : '/event'},
+    {title : '뉴스', url : '/news'},
+    {title : '스토어', url : '/store'},
+    {title : '충전소', url : '/charge'},
+  ]
+
+  const navigate = useNavigate();
+  const nowPage = useLocation().pathname;
+
   return (
     <S.Nav>
-      <S.Nav_item>차트</S.Nav_item>
-      <S.Nav_item>Whook</S.Nav_item>
-      <S.Nav_item>이벤트</S.Nav_item>
-      <S.Nav_item>뉴스</S.Nav_item>
-      <S.Nav_item>스토어</S.Nav_item>
-      <S.Nav_item>충전소</S.Nav_item>
+      {menu_list.map(item => (
+        <S.Nav_item onClick={() => navigate(item.url)} className={item.url === nowPage ? 'select' : ''}>{item.title}</S.Nav_item>
+      ))}
     </S.Nav>
   )
 }

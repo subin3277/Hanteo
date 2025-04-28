@@ -1,11 +1,16 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import Main from './pages/Main';
-import { Footer, Nav } from './components';
 import Whook from './pages/Whook';
+import Event from './pages/Event';
+import News from './pages/News';
+import Store from './pages/Store';
+import Charge from './pages/Charge';
+import { Footer, Nav } from './components';
 import { useRef, useState } from 'react';
+import {styled} from 'styled-components';
 
-const pages = ['/', '/whook']
+const pages = ['/', '/whook', '/event', '/news', '/store', '/charge']
 
 const Swipe = () => {
   const navigate = useNavigate();
@@ -22,7 +27,6 @@ const Swipe = () => {
   const minSwipeDistance = 75;
 
   const onTouchStart = e => {
-    console.log("Start")
     touchStartX.current = e.changedTouches[0].clientX;
   }
 
@@ -83,11 +87,15 @@ const Swipe = () => {
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
-      style={{ touchAction: 'none', flex : 1 }} // 모바일에서 스크롤 방지
+      style={{ touchAction: 'none', flex : 1 }}
     >
       <Routes>
         <Route exact path="/" element={<Main/>}/>
         <Route path="/whook" element={<Whook/>}/>
+        <Route path="/event" element={<Event/>}/>
+        <Route path="/news" element={<News/>}/>
+        <Route path="/store" element={<Store/>}/>
+        <Route path="/charge" element={<Charge/>}/>
       </Routes>
     </div>
   )
@@ -95,10 +103,11 @@ const Swipe = () => {
 function App() {
   return (
     <div className="App">
-      <Nav/>
-
       <Router>
+      <Nav/>
+      <div style={{display : 'flex', flex : '1 0 0', flexDirection : 'row'}}>
         <Swipe/>
+      </div>
       </Router>
 
       <Footer/>

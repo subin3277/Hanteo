@@ -87,7 +87,7 @@ const Swipe = () => {
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
-      style={{ touchAction: 'none', flex : 1 }}
+      style={{flex : 1 }}
     >
       <Routes>
         <Route exact path="/" element={<Main/>}/>

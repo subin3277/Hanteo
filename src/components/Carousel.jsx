@@ -78,7 +78,7 @@ const Carousel = ({children, dots, delayTime}) => {
 const S = {
   Slider : styled.div`
     width: 100%;
-    max-width: 100dvw;
+    max-width: 425px;
     overflow: hidden;
     position: relative;
     box-sizing: border-box;

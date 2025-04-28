@@ -11,6 +11,7 @@ const Footer = () => {
 const S = {
   Footer : styled.footer`
     width: 100%;
+    max-width: 425px;
     height: 70px;
     background-color: lightgrey;
 

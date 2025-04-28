@@ -103,16 +103,27 @@ const Swipe = () => {
 function App() {
   return (
     <div className="App">
-      <Router>
-      <Nav/>
-      <div style={{display : 'flex', flex : '1 0 0', flexDirection : 'row'}}>
-        <Swipe/>
-      </div>
-      </Router>
+      <S.App>
+        <Router>
+        <Nav/>
+        <div style={{display : 'flex', flex : '1 0 0', flexDirection : 'row'}}>
+          <Swipe/>
+        </div>
+        </Router>
 
-      <Footer/>
+        <Footer/>
+      </S.App>
     </div>
   );
+}
+
+const S = {
+  App : styled.div`
+    
+    @media(min-width : 425px) {
+      max-width: 425px;
+    }
+  `
 }
 
 export default App;

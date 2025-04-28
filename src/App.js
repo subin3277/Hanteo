@@ -27,24 +27,25 @@ const Swipe = () => {
   const minSwipeDistance = 75;
 
   const onTouchStart = e => {
-    touchStartX.current = e.changedTouches[0].clientX;
+    touchStartX.current = e.touches[0].clientX;
   }
 
   const onTouchMove = e => {
-    touchEndX.current = e.changedTouches[0].clientX;
+    touchEndX.current = e.touches[0].clientX;
   }
   
-  const onTouchEnd = () => {
+  const onTouchEnd = e => {
+    e.preventDefault();
     handleSwipe()
   }
 
   // 마우스 핸들러
-  const onMouseDown = (e) => {
+  const onMouseDown = e => {
     startX.current = e.clientX;
     setIsDragging(true);
   };
 
-  const onMouseMove = (e) => {
+  const onMouseMove = e => {
     if (isDragging) {
       endX.current = e.clientX;
     }
@@ -60,9 +61,10 @@ const Swipe = () => {
   // 스와이프 판정 함수
   const handleSwipe = () => {
     const distance = startX.current - endX.current;
-    if (distance > minSwipeDistance && currentIdx < pages.length - 1) {
+    const distance_touch = touchStartX.current - touchEndX.current;
+    if ((distance > minSwipeDistance || distance_touch > minSwipeDistance) && currentIdx < pages.length - 1) {
       goNext();
-    } else if (distance < -minSwipeDistance && currentIdx > 0) {
+    } else if ((distance < -minSwipeDistance || distance_touch < -minSwipeDistance) && currentIdx > 0) {
       goPrev();
     }
   };
@@ -87,7 +89,7 @@ const Swipe = () => {
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
-      style={{flex : 1 }}
+      style={{ touchAction: 'none', flex : 1 }}
     >
       <Routes>
         <Route exact path="/" element={<Main/>}/>
@@ -119,7 +121,9 @@ function App() {
 
 const S = {
   App : styled.div`
-    
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     @media(min-width : 425px) {
       max-width: 425px;
     }
